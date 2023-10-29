@@ -1,0 +1,26 @@
+from rest_framework import serializers
+
+
+class PredictionInputSerializer(serializers.Serializer):
+    age = serializers.FloatField()
+    sex = serializers.FloatField()
+    trestbps = serializers.FloatField()
+    chol = serializers.FloatField()
+    fbs = serializers.FloatField()
+    thalach = serializers.FloatField()
+    exang = serializers.FloatField()
+    oldpeak = serializers.FloatField()
+    ca = serializers.FloatField()
+    cp_0 = serializers.FloatField()
+    cp_1 = serializers.FloatField()
+    cp_2 = serializers.FloatField()
+    cp_3 = serializers.FloatField()
+    restecg_0 = serializers.FloatField()
+    restecg_1 = serializers.FloatField()
+    restecg_2 = serializers.FloatField()
+    slope_0 = serializers.FloatField()
+    slope_1 = serializers.FloatField()
+    slope_2 = serializers.FloatField()
+    thal_0 = serializers.FloatField()
+    thal_1 = serializers.FloatField()
+    thal_2 = serializers.FloatField()

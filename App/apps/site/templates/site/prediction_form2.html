@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Heart Disease Prediction Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'global/css/styles.css' %}">
+</head>
+<body>
+
+    <div class="div-form">
+        <h1>Previsão de Doença Cardíaca</h1>
+
+        {% if prediction_result %}
+        <div class="prediction-result">
+            <h2 class="prediction-heading">Resultado da Previsão</h2>
+            <p class="prediction-text">
+                A previsão indica que o paciente tem <span class="prediction-probability">{{ prediction_result.probabilities.1|floatformat:2 }}%</span> de chance de ter doença cardíaca
+                e <span class="prediction-probability">{{ prediction_result.probabilities.0|floatformat:2 }}%</span> de chance de não ter doença cardíaca.
+            </p>
+            <p class="prediction-text">
+                Com base nas informações fornecidas, sugerimos que o paciente busque uma avaliação médica mais detalhada para uma conclusão precisa.
+            </p>
+        </div> 
+        {% endif %}
+
+        <form method="post" class="prediction-form">
+            {% csrf_token %}
+            <div class="form-field">
+                <label for="{{ form.age.id_for_label }}">Idade:</label>
+                {{ form.age }}
+                <div class="help-text">{{ form.age.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.sex.id_for_label }}">Sexo:</label>
+                {{ form.sex }}
+                <div class="help-text">{{ form.sex.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.cp.id_for_label }}">Tipo de Dor no Peito:</label>
+                {{ form.cp }}
+                <div class="help-text">{{ form.cp.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.trestbps.id_for_label }}">Pressão Arterial em Repouso:</label>
+                {{ form.trestbps }}
+                <div class="help-text">{{ form.trestbps.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.chol.id_for_label }}">Colesterol:</label>
+                {{ form.chol }}
+                <div class="help-text">{{ form.chol.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.fbs.id_for_label }}">Açúcar no Sangue em Jejum:</label>
+                {{ form.fbs }}
+                <div class="help-text">{{ form.fbs.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.restecg.id_for_label }}">Eletrocardiograma em Repouso:</label>
+                {{ form.restecg }}
+                <div class="help-text">{{ form.restecg.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.thalach.id_for_label }}">Frequência Cardíaca Máxima Alcançada:</label>
+                {{ form.thalach }}
+                <div class="help-text">{{ form.thalach.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.exang.id_for_label }}">Angina Induzida por Exercício:</label>
+                {{ form.exang }}
+                <div class="help-text">{{ form.exang.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.oldpeak.id_for_label }}">Depressão do Segmento ST Induzida por Exercício:</label>
+                {{ form.oldpeak }}
+                <div class="help-text">{{ form.oldpeak.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.slope.id_for_label }}">Inclinação do Segmento ST no Pico do Exercício:</label>
+                {{ form.slope }}
+                <div class="help-text">{{ form.slope.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.ca.id_for_label }}">Número de Vasos Principais Coloridos por Fluoroscopia:</label>
+                {{ form.ca }}
+                <div class="help-text">{{ form.ca.help_text }}</div>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.thal.id_for_label }}">Resultado do Teste de Thallium:</label>
+                {{ form.thal }}
+                <div class="help-text">{{ form.thal.help_text }}</div>
+            </div>
+            <button type="submit" class="submit-button">Prever</button>
+        </form>
+    </div>
+
+    <script src="{% static 'js/form_scripts.js' %}"></script>
+
+</body>
+</html>

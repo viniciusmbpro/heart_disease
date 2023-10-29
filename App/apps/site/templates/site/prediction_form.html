@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Heart Disease Prediction Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'global/css/styles.css' %}">
+</head>
+<body>
+
+    <div class="div-form">
+        <h1>Previsão de Doença Cardíaca</h1>
+
+        {% if prediction_result %}
+        <div class="prediction-result">
+            <h2 class="prediction-heading">Resultado da Previsão</h2>
+            <p class="prediction-text">
+                A previsão indica que o paciente tem <span class="prediction-probability">{{ prediction_result.probabilities.1|floatformat:2 }}%</span> de chance de ter doença cardíaca
+                e <span class="prediction-probability">{{ prediction_result.probabilities.0|floatformat:2 }}%</span> de chance de não ter doença cardíaca.
+            </p>
+            <p class="prediction-text">
+                Com base nas informações fornecidas, sugerimos que o paciente busque uma avaliação médica mais detalhada para uma conclusão precisa.
+            </p>
+        </div> 
+        {% endif %}
+
+        <form method="post" class="prediction-form">
+            {% csrf_token %}
+            <div class="form-field">
+                <label for="id_age">Idade:</label>
+                <input type="number" name="age" id="id_age" step="0.01" required>
+                <div class="help-text">Idade do paciente em anos.</div>
+            </div>
+            <div class="form-field">
+                <label for="id_sex">Sexo:</label>
+                <select name="sex" id="id_sex" required>
+                    <option value="0">Feminino</option>
+                    <option value="1">Masculino</option>
+                </select>
+                <div class="help-text">Sexo do paciente. Escolha entre 'Feminino' ou 'Masculino' para identificar o gênero do paciente.</div>
+            </div>
+            <div class="form-field">
+                <label for="id_cp">Tipo de Dor no Peito:</label>
+                <select name="cp" id="id_cp" required>
+                    <option value="1">Angina Típica</option>
+                    <option value="2">Angina Atípica</option>
+                    <option value="3">Dor Não Anginosa</option>
+                    <option value="4">Assintomático</option>
+                </select>
+                <div class="help-text">Tipo de dor no peito relatada pelo paciente. Escolha uma das opções que melhor descreva a sensação de dor.</div>
+            </div>
+            <div class="form-field">
+                <label for="id_trestbps">Pressão Arterial Sistólica em Repouso:</label>
+                <input type="number" name="trestbps" id="id_trestbps" step="0.01" required>
+                <div class="help-text">
+                    Pressão arterial de repouso do paciente (mm Hg). Insira o valor da pressão arterial em milímetros de mercúrio (mm Hg). 
+                    Por exemplo, uma pressão arterial normal está na faixa de 90/60 mm Hg a 120/80 mm Hg. Valores acima dessa faixa podem indicar pressão alta.
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="id_chol">Colesterol:</label>
+                <input type="number" name="chol" id="id_chol" step="0.01" required>
+                <div class="help-text">
+                    Nível de colesterol sérico do paciente (mg/dl). Insira o valor do colesterol em miligramas por decilitro (mg/dl). 
+                    O colesterol é uma substância gordurosa no sangue e valores elevados podem indicar risco de doenças cardiovasculares.
+                    Por exemplo, um nível de colesterol total abaixo de 200 mg/dl é considerado desejável, enquanto um nível acima de 240 mg/dl pode ser preocupante.
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="id_fbs">Açúcar no Sangue em Jejum:</label>
+                <select name="fbs" id="id_fbs" required>
+                    <option value="0">Menor ou igual a 120 mg/dl</option>
+                    <option value="1">Maior que 120 mg/dl</option>
+                </select>
+                <div class="help-text">Nível de açúcar no sangue em jejum do paciente. Escolha entre 'Menor ou igual a 120 mg/dl' ou 'Maior que 120 mg/dl' para indicar se o nível de açúcar está elevado.</div>
+            </div>
+            <div class="form-field">
+                <label for="id_restecg">Resultados do Eletrocardiograma em Repouso:</label>
+                <select name="restecg" id="id_restecg" required>
+                    <option value="0">Normal</option>
+                    <option value="1">Anormalidade da Onda ST-T</option>
+                    <option value="2">Hipertrofia Ventricular Esquerda Provável ou Definitiva (Critérios de Estes)</option>
+                </select>
+                <div class="help-text">Resultados do eletrocardiograma em repouso do paciente. Escolha a opção que melhor descreva o resultado do eletrocardiograma.</div>
+            </div>
+            <div class="form-field">
+                <label for="id_thalach">Frequência Cardíaca Máxima Alcançada:</label>
+                <input type="number" name="thalach" id="id_thalach" step="0.01" required>
+                <div class="help-text">
+                    Frequência cardíaca máxima alcançada durante o exercício. Insira o valor da frequência cardíaca em batimentos por minuto (bpm). 
+                    A frequência cardíaca máxima é um indicador do esforço cardiovascular durante o exercício e pode variar com a idade. 
+                    Por exemplo, uma frequência cardíaca máxima de 220 - idade do paciente é frequentemente usada como uma estimativa geral. 
+                    Uma frequência cardíaca máxima saudável durante o exercício depende do condicionamento físico do paciente.
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="id_exang">Angina Induzida por Exercício:</label>
+                <select name="exang" id="id_exang" required>
+                    <option value="0">Não</option>
+                    <option value="1">Sim</option>
+                </select>
+                <div class="help-text">Angina induzida por exercício relatada pelo paciente. Escolha entre 'Não' ou 'Sim' para indicar se o paciente teve angina após o exercício.</div>
+            </div>
+            <div class="form-field">
+                <label for="id_oldpeak">Depressão do Segmento ST Induzida por Exercício:</label>
+                <input type="number" name="oldpeak" id="id_oldpeak" step="0.01" required>
+                <div class="help-text">
+                    Depressão do segmento ST induzida por exercício em relação ao repouso. Insira o valor da depressão do segmento ST. 
+                    A depressão do segmento ST é uma medida do deslocamento para baixo do segmento ST no eletrocardiograma após o exercício, 
+                    indicando possíveis problemas de fluxo sanguíneo para o coração. Uma depressão maior pode ser um sinal de isquemia cardíaca, 
+                    enquanto uma depressão menor pode ser considerada normal. Valores elevados podem indicar um risco maior de doença cardíaca. 
+                    Consulte um profissional de saúde para interpretação clínica precisa.
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="id_slope">Inclinação do Segmento ST no Pico do Exercício:</label>
+                <select name="slope" id="id_slope" required>
+                    <option value="1">Ascendente</option>
+                    <option value="2">Plano</option>
+                    <option value="3">Descendente</option>
+                </select>
+                <div class="help-text">
+                    Inclinação do segmento ST no pico do exercício. Escolha a opção que melhor descreva a inclinação do segmento ST.
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="id_ca">Número de Vasos Principais Coloridos por Fluoroscopia:</label>
+                <input type="number" name="ca" id="id_ca" step="1" min="0" max="3" required>
+                <div class="help-text">
+                    Número de vasos principais coloridos por fluoroscopia. Insira a quantidade de vasos principais que apresentaram coloração durante o procedimento. 
+                    A fluoroscopia é um exame médico que utiliza radiação para criar imagens em tempo real do interior do corpo, geralmente utilizado para visualizar os vasos sanguíneos. O número de vasos coloridos pode indicar a presença de obstruções ou problemas nos vasos, com um valor maior sugerindo um possível risco maior de doença cardíaca. Consulte um profissional de saúde para interpretação clínica precisa.
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="id_thal">Resultado do Teste de Thallium:</label>
+                <select name="thal" id="id_thal" required>
+                    <option value="3">Normal</option>
+                    <option value="6">Defeito Fixo</option>
+                    <option value="7">Defeito Reversível</option>
+                </select>
+                <div class="help-text">
+                    Resultado do teste de estresse com thallium. O teste de thallium, também conhecido como cintilografia miocárdica, é um exame que avalia o fluxo sanguíneo para o músculo cardíaco durante o repouso e o esforço físico. 
+                    Os resultados podem ser classificados em três categorias: 'Normal' indica que o fluxo sanguíneo é adequado durante o repouso e o esforço; 'Defeito Fixo' indica uma redução no fluxo sanguíneo que é consistente durante repouso e esforço, 
+                    indicando uma possível cicatriz cardíaca ou dano permanente; 'Defeito Reversível' indica uma redução no fluxo sanguíneo apenas durante o esforço, sugerindo um possível bloqueio temporário em uma artéria coronária. 
+                    Consulte um profissional de saúde para interpretação clínica precisa dos resultados.
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Prever</button>
+        </form>
+    </div>
+
+    <script src="{% static 'js/form_scripts.js' %}"></script>
+
+</body>
+</html>
